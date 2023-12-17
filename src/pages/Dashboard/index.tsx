@@ -39,8 +39,8 @@ const Dashboard: React.FC = () => {
         <>
             <AppBar sx={{ backgroundColor: '#F2F2F2' }} position="static">
                 <Toolbar >
-                    <Typography color='#d21919' variant="h6" style={{ flexGrow: 1 }}>
-                        Товари H&M ТЕСТ
+                    <Typography color='#1876D1' variant="h6" style={{ flexGrow: 1 }}>
+                        Товари H&M
                     </Typography>
                     <Button variant="contained" onClick={handleLogout}>
                         Вийти
