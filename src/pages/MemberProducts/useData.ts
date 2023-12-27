@@ -21,10 +21,7 @@ export const useData = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [regionFilter, setRegionFilter] = useState('all');
     const [categoryFilter, setCategoryFilter] = useState('all');
-    const [reasonFilter, setReasonFilter] = useState('all');
     const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
- // Filter products based on region
-
 
  
 
@@ -33,7 +30,7 @@ export const useData = () => {
     }, []);
   
     const fetchProducts = () => {
-      axios.get('https://wizz-app.net/api/sizes')
+      axios.get('https://wizz-app.net/api/memberSizes')
         .then(response => {
           setProducts(response.data);
         })
@@ -43,7 +40,7 @@ export const useData = () => {
     };
   
     function deleteProduct(articleCode: string) {
-        axios.delete(`https://wizz-app.net/api/sizes/${articleCode}`)
+        axios.delete(`https://wizz-app.net/api/memberSizes/${articleCode}`)
             .then(() => {
                 // Refresh the product list
                 fetchProducts();
@@ -54,7 +51,7 @@ export const useData = () => {
     }
   
     const deleteAllProducts = () => {
-      axios.delete('https://wizz-app.net/api/sizes')
+      axios.delete('https://wizz-app.net/api/memberSizes')
         .then(() => {
           // Refresh the product list
           fetchProducts();
@@ -67,9 +64,8 @@ export const useData = () => {
     const deleteProducts = () => {
         const region = regionFilter === 'all' ? '' : regionFilter;
         const category = categoryFilter === 'all' ? '' : categoryFilter;
-        const reason = reasonFilter === 'all' ? '' : reasonFilter;
 
-      axios.delete(`https://wizz-app.net/api/sizes/delete?region=${region}&category=${category}&reason=${reason}`)
+      axios.delete(`https://wizz-app.net/api/memberSizes/delete?region=${region}&category=${category}&reason=''}`)
         .then(() => {
           // Refresh the product list
           fetchProducts();
@@ -82,7 +78,7 @@ export const useData = () => {
 
     const handleDelete = () => {
         // Delete all products
-        if (regionFilter === 'all' && categoryFilter === 'all' && reasonFilter === 'all') {
+        if (regionFilter === 'all' && categoryFilter === 'all') {
             deleteAllProducts();
         } else {
             // Delete filtered products
@@ -101,29 +97,22 @@ export const useData = () => {
         // Further filter by category
         const categoryFilteredProducts = categoryFilter === 'all' 
             ? regionFilteredProducts 
-            : regionFilteredProducts.filter(product => product.category === categoryFilter);
-
-        // Further filter by reason
-        const reasonFilteredProducts = reasonFilter === 'all' 
-            ? categoryFilteredProducts 
-            : categoryFilteredProducts.filter(product => product.reason === reasonFilter);
-
+            : regionFilteredProducts.filter(product => product.category === categoryFilter);    
+            
             if (sortBy === 'dateAdding') {
-              return reasonFilteredProducts.sort((a, b) => {
-                const dateA = new Date(a.date);
-                const dateB = new Date(b.date);
-                return dateB.getTime() - dateA.getTime(); // Descending order of date
-            });
-               
-            } else {
-              return reasonFilteredProducts.sort((a, b) => {
-                const salePercentA = parseInt(a.salePercent.replace('-', '').replace('%', ''), 10);
-                const salePercentB = parseInt(b.salePercent.replace('-', '').replace('%', ''), 10);
-                return salePercentB - salePercentA; // Descending order of salePercent
-            });
-
+                return categoryFilteredProducts.sort((a, b) => {
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return dateB.getTime() - dateA.getTime(); // Descending order of date
+                });
+            } else{
+                return categoryFilteredProducts.sort((a, b) => {
+                    const salePercentA = parseInt(a.salePercent.replace('-', '').replace('%', ''), 10);
+                    const salePercentB = parseInt(b.salePercent.replace('-', '').replace('%', ''), 10);
+                    return salePercentB - salePercentA; // Descending order of salePercent
+                });
             }
-    }, [products, regionFilter, categoryFilter, reasonFilter, sortBy]);
+    }, [products, regionFilter, categoryFilter, sortBy]);
 
 
 
@@ -139,8 +128,6 @@ export const useData = () => {
     setIsConfirmDeleteModalOpen,
     categoryFilter,
     setCategoryFilter,
-    reasonFilter,
-    setReasonFilter,
     handleDelete,
     sortBy,
     setSortBy

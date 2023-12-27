@@ -5,9 +5,13 @@ interface AlertProps {
     isOpen: boolean;
     onCancel: () => void;
     onConfirm: () => void;
+    title: string;
+    content: string;
+    cancelText?: string;
+    confirmText: string;
 }
 
-const Alert = ({ isOpen, onCancel, onConfirm }: AlertProps) => {
+const Alert = ({ title, content, cancelText, confirmText, isOpen, onCancel, onConfirm }: AlertProps) => {
     return (<Dialog
         open={isOpen}
         onClose={onCancel}
@@ -15,19 +19,18 @@ const Alert = ({ isOpen, onCancel, onConfirm }: AlertProps) => {
         aria-describedby="alert-dialog-description"
     >
         <DialogTitle id="alert-dialog-title">
-            {"Ви впевнені що хочете видалити всі товари?"}
+            {title}
         </DialogTitle>
         <DialogContent>
             <DialogContentText id="alert-dialog-description">
-                Будуть виладені всі товари які зараз відфільтровані,
-                або всі товари якщо фільтри не обрано.
-                Після видалення товари не можливо буде відновити!
+                {content}
             </DialogContentText>
         </DialogContent>
         <DialogActions>
-            <Button onClick={onCancel}>Скасувати</Button>
+            {cancelText && <Button onClick={onCancel}>{cancelText}</Button>
+            }
             <Button onClick={onConfirm} autoFocus>
-                Підтвердити
+                {confirmText}
             </Button>
         </DialogActions>
     </Dialog>)

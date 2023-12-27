@@ -20,7 +20,16 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
     };
 
     const renderSizes = () => {
-        return JSON.parse(product.availableSizes).map((size: string) => {
+        const sizes = JSON.parse(product.availableSizes);
+        if (sizes.length === 0) {
+            return (
+                <Typography variant="body2" component="span" color="text.secondary">
+                    One size
+                </Typography>
+            );
+        }
+
+        return sizes.map((size: string) => {
             const isFewLeft = size.includes("Few pieces left");
             const displaySize = isFewLeft ? size.replace("Few pieces left", "").trim() : size;
             return (
@@ -35,8 +44,10 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
         let translatedReason;
         if (product.reason === 'isUpdated') {
             translatedReason = 'Змінилась ціна';
-        } else {
+        } else if (product.reason === 'isNew') {
             translatedReason = 'Новий товар';
+        } else {
+            translatedReason = 'Додано вручну';
         }
 
         return (
@@ -64,7 +75,7 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
                     image={product.imageLink}
                     alt={product.articleCode}
                 />
-                <CardContent>
+                <CardContent sx={{ height: 'calc(100% - 220px)', display: 'flex', flexDirection: 'column' }}>
                     {product.name && <Typography variant="body2" color="text.secondary">
                         {product.name}
                     </Typography>}
@@ -73,11 +84,13 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
                     </Typography>
                     <Divider style={{ margin: '5px 0' }} />
                     <Typography variant="body2" color="text.secondary">
-                        Знижка: {product.salePercent}
+                        Знижка: {product.salePercent || 'Відсутня'}
                     </Typography>
                     <Divider style={{ margin: '5px 0' }} />
                     <Typography variant="body2" color="text.secondary">
-                        Ціна з знижкою: {product.priceSale} <br /> (Ціна без знижки: {product.priceRegular})
+                        {product.priceSale && `Ціна з знижкою: ${product.priceSale}`}
+                        {product.priceSale && <br />}
+                        {`Ціна ${product.priceSale ? 'без знижки' : ''}: ${product.priceRegular}`}
                     </Typography>
                     <Divider style={{ margin: '5px 0' }} />
                     <Typography variant="body2" color="text.secondary">
@@ -88,7 +101,7 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
                     </div>
                     {renderReason()}
                     <Divider style={{ margin: '5px 0' }} />
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
                         {<Typography variant="body2" color="text.secondary">
                             Категорія: {product.category}
                         </Typography>}

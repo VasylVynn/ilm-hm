@@ -6,12 +6,11 @@ import ProductCard from "../../components/ProductCard";
 import Alert from "../../components/Alert";
 import Header from "../../components/Header";
 
-const Dashboard: React.FC = () => {
+const MemberProducts: React.FC = () => {
 
     const auth = useAuth();
 
-    const {
-        deleteProduct,
+    const { deleteProduct,
         sortedFilteredProducts,
         regionFilter,
         setRegionFilter,
@@ -19,8 +18,6 @@ const Dashboard: React.FC = () => {
         setIsConfirmDeleteModalOpen,
         categoryFilter,
         setCategoryFilter,
-        reasonFilter,
-        setReasonFilter,
         handleDelete,
         sortBy,
         setSortBy
@@ -61,17 +58,6 @@ const Dashboard: React.FC = () => {
                         <MenuItem value="kids">Kids</MenuItem>
                         <MenuItem value="baby">Baby</MenuItem>
                     </TextField>
-                    <TextField
-                        select
-                        label="Фільтр по причині"
-                        value={reasonFilter}
-                        onChange={(e) => setReasonFilter(e.target.value)}
-                        style={{ margin: '10px', minWidth: '140px' }}
-                    >
-                        <MenuItem value="all">Всі</MenuItem>
-                        <MenuItem value="isNew">Новий товар</MenuItem>
-                        <MenuItem value="isUpdated">Змінилась ціна</MenuItem>
-                    </TextField>
                     <Button variant="contained" onClick={() => setIsConfirmDeleteModalOpen(true)}>
                         Видалити всі товари
                     </Button>
@@ -103,9 +89,8 @@ const Dashboard: React.FC = () => {
                 Після видалення товари не можливо буде відновити!"
                 cancelText="Скасувати"
                 confirmText="Підтвердити"
-                isOpen={isConfirmDeleteModalOpen} onCancel={() => setIsConfirmDeleteModalOpen(false)} onConfirm={handleDelete} />
-        </>
+                isOpen={isConfirmDeleteModalOpen} onCancel={() => setIsConfirmDeleteModalOpen(false)} onConfirm={handleDelete} />        </>
     );
 }
 
-export default Dashboard;
+export default MemberProducts;
