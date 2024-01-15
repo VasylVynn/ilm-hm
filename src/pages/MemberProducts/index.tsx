@@ -46,6 +46,7 @@ const MemberProducts: React.FC = () => {
                         <MenuItem value="all">Всі</MenuItem>
                         <MenuItem value="us">US</MenuItem>
                         <MenuItem value="gb">GB</MenuItem>
+                        <MenuItem value="pl">PL</MenuItem>
                     </TextField>
                     <TextField
                         select
@@ -57,6 +58,8 @@ const MemberProducts: React.FC = () => {
                         <MenuItem value="all">Всі</MenuItem>
                         <MenuItem value="kids">Kids</MenuItem>
                         <MenuItem value="baby">Baby</MenuItem>
+                        <MenuItem value="dziecko">Dziecko</MenuItem>
+                        <MenuItem value="niemowleta">Niemowleta</MenuItem>
                     </TextField>
                     <Button variant="contained" onClick={() => setIsConfirmDeleteModalOpen(true)}>
                         Видалити всі товари

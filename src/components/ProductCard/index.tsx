@@ -28,10 +28,9 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
                 </Typography>
             );
         }
-
         return sizes.map((size: string) => {
-            const isFewLeft = size.includes("Few pieces left");
-            const displaySize = isFewLeft ? size.replace("Few pieces left", "").trim() : size;
+            const isFewLeft = size.includes("Few pieces left") || size.includes("Zostało tylko kilka sztuk!");
+            const displaySize = isFewLeft ? size.replace("Few pieces left", "").replace("Zostało tylko kilka sztuk!", "").trim() : size;
             return (
                 <Typography key={size} variant="body2" component="span" color={isFewLeft ? "red" : "text.secondary"}>
                     {`${displaySize},`}
@@ -96,7 +95,7 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
                     <Typography variant="body2" color="text.secondary">
                         Доступні розміри:
                     </Typography>
-                    <div>
+                    <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
                         {renderSizes()}
                     </div>
                     {renderReason()}
@@ -111,7 +110,7 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
                 </CardContent>
             </a>
 
-        </Card>
+        </Card >
     );
 };
 
