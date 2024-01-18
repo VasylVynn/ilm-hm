@@ -11,6 +11,7 @@ export const useData = () => {
     const [error, setError] = useState('');
     const [status, setStatus] = useState('');  
     const [serverStatus, setServerStatus] = useState<ServerStatus|null>(null);
+    const [memberCount, setMemberCount] = useState<number>(0);
 
 
 const serverStatusText = useMemo(() => {
@@ -23,7 +24,7 @@ const serverStatusText = useMemo(() => {
   }
 
   if (serverStatus.memberTaskStatus ) {
-    return 'Сервер зайнятий. Попередні товари Member prices ще не оброблені.';
+    return `Сервер зайнятий. Попередні товари Member prices ще не оброблені. \nОброблено ${memberCount} товарів.`;
   }
 
   return 'Сервер вільний.';
@@ -31,7 +32,7 @@ const serverStatusText = useMemo(() => {
 }, [serverStatus]);
 
     const checkServerStatus = () => {
-      axios.get('https://wizz-app.net/api/jobsStatus')
+      axios.get('http://localhost:3000/api/jobsStatus')
         .then(response => {
           setServerStatus(response.data);
         })
@@ -40,12 +41,23 @@ const serverStatusText = useMemo(() => {
         });
     }
 
+    const checkMemberCount = () => {
+      axios.get('http://localhost:3000/api/checkMemberCount')
+        .then(response => {
+          setMemberCount(response.data.memberCount);
+        })
+        .catch(error => {
+          console.error('There was an error fetching the product data:', error);
+        });
+    }
+
     useEffect(() => {
       checkServerStatus();
+      checkMemberCount();
     }, []);
   
     const requestScraping = () => {
-      axios.post('https://wizz-app.net/api/startScraping',
+      axios.post('http://localhost:3000/api/startScraping',
       {
           url: link,
       })
@@ -61,6 +73,18 @@ const serverStatusText = useMemo(() => {
       });
   };
 
+  const requestStopMemberTask = () => {
+    axios.post('http://localhost:3000/api/stopScraping')
+    .then((response) => {
+      if (response.status === 200) {
+      setStatus('stopped')
+      } else {
+        console.log('Unexpected status code:', response.status);
+      }
+  })      .catch(error => {
+        console.error('There was an error deleting all products:', error);
+        setError(error.response.data.error);
+    });}
    
 
   const handleRequest = async () => {
@@ -80,7 +104,10 @@ const serverStatusText = useMemo(() => {
     setStatus,
     error,
     setError,
-    serverStatusText
+    serverStatusText,
+    requestStopMemberTask,
+    serverStatus,
+    memberCount
   };
 };
 

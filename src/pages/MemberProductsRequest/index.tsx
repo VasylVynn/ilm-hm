@@ -16,8 +16,9 @@ const MemberProductsRequest: React.FC = () => {
         setError,
         status,
         setStatus,
-        serverStatusText
-
+        serverStatusText,
+        requestStopMemberTask,
+        serverStatus
     } = useData();
 
 
@@ -29,10 +30,13 @@ const MemberProductsRequest: React.FC = () => {
         <>
             <Header />
             <Container>
-                <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
-                    <Typography variant="h5" color={'black'} component="h3" sx={{ marginBottom: '15px' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '15px' }}>
+                    <Typography variant="h5" color={'black'} component="h3" sx={{ marginBottom: '15px', whiteSpace: 'break-spaces' }}>
                         Стан серверу: {serverStatusText}
                     </Typography>
+                    {serverStatus?.memberTaskStatus && <Button sx={{ width: '100px', marginBottom: '20px' }} variant="contained" onClick={requestStopMemberTask}>
+                        Зупинити
+                    </Button>}
                 </Box>
                 <Box>
                     <Typography variant="body1" color={'black'} component="h3" sx={{ marginBottom: '15px' }}>
@@ -57,7 +61,7 @@ const MemberProductsRequest: React.FC = () => {
             </Container>
             <Alert
                 title={!!error ? 'Помилка' : 'Успіх'}
-                content={!!error ? error : 'Запит успішно відправлено. Після обробки товари зявляться на сторінці "Товари Member Prices"'}
+                content={!!error ? error : status !== 'stopped' ? 'Запит успішно відправлено. Після обробки товари зявляться на сторінці "Товари Member Prices"' : 'Запит на зупинку виконано. Перевірку товарів буде зупинено'}
                 confirmText="Oк"
                 isOpen={!!error || !!status}
                 onCancel={() => {
@@ -67,8 +71,10 @@ const MemberProductsRequest: React.FC = () => {
                 onConfirm={() => {
                     setError('');
                     setStatus('');
+                    window.location.reload();
                 }}
-            />        </>
+            />
+        </>
     );
 }
 
