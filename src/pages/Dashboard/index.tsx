@@ -23,7 +23,9 @@ const Dashboard: React.FC = () => {
         setReasonFilter,
         handleDelete,
         sortBy,
-        setSortBy
+        setSortBy,
+        availableSizesFilter,
+        setAvailableSizesFilter
     } = useData();
 
 
@@ -71,6 +73,17 @@ const Dashboard: React.FC = () => {
                         <MenuItem value="all">Всі</MenuItem>
                         <MenuItem value="isNew">Новий товар</MenuItem>
                         <MenuItem value="isUpdated">Змінилась ціна</MenuItem>
+                    </TextField>
+                    <TextField
+                        select
+                        label="Фільтр по кількості"
+                        value={availableSizesFilter}
+                        onChange={(e) => setAvailableSizesFilter(parseInt(e.target.value))}
+                        style={{ margin: '10px', minWidth: '140px' }}
+                    >
+                        <MenuItem value={0}>Будь-яка кількість</MenuItem>
+                        <MenuItem value={2}>{">= 2"}</MenuItem>
+                        <MenuItem value={3}>{">= 3"}</MenuItem>
                     </TextField>
                     <Button variant="contained" onClick={() => setIsConfirmDeleteModalOpen(true)}>
                         Видалити всі товари

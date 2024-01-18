@@ -18,6 +18,7 @@ export interface Product {
 
 export const useData = () => {
     const [sortBy, setSortBy] = useState('salePercent');
+    const [availableSizesFilter, setAvailableSizesFilter] = useState(0);
     const [products, setProducts] = useState<Product[]>([]);
     const [regionFilter, setRegionFilter] = useState('all');
     const [categoryFilter, setCategoryFilter] = useState('all');
@@ -87,12 +88,20 @@ export const useData = () => {
         setIsConfirmDeleteModalOpen(false);
     }
 
-
     const sortedFilteredProducts = useMemo(() => {
+
+
+      const availableSizesFilterArray = !availableSizesFilter? products : products.filter((product: any) => {
+        const sizes = JSON.parse(product.availableSizes);
+        const fewLeftSizes = sizes.filter((size: string) => size.includes("Few pieces left") || size.includes("Zostało tylko kilka sztuk!"));
+        return sizes.length >= availableSizesFilter &&  !(sizes.length === availableSizesFilter && fewLeftSizes.length === availableSizesFilter);
+    });
         // Filter by region
         const regionFilteredProducts = regionFilter === 'all' 
-            ? products 
-            : products.filter(product => product.region.toLowerCase() === regionFilter.toLowerCase());
+            ? availableSizesFilterArray 
+            : availableSizesFilterArray.filter(product => product.region.toLowerCase() === regionFilter.toLowerCase());
+
+        
 
         // Further filter by category
         const categoryFilteredProducts = categoryFilter === 'all' 
@@ -112,7 +121,9 @@ export const useData = () => {
                     return salePercentB - salePercentA; // Descending order of salePercent
                 });
             }
-    }, [products, regionFilter, categoryFilter, sortBy]);
+
+            
+    }, [products, regionFilter, categoryFilter, sortBy, availableSizesFilter]);
 
 
 
@@ -130,7 +141,9 @@ export const useData = () => {
     setCategoryFilter,
     handleDelete,
     sortBy,
-    setSortBy
+    setSortBy,
+    availableSizesFilter,
+    setAvailableSizesFilter
   };
 };
 

@@ -18,6 +18,7 @@ export interface Product {
 
 export const useData = () => {
     const [sortBy, setSortBy] = useState('salePercent');
+    const [availableSizesFilter, setAvailableSizesFilter] = useState(0);
     const [products, setProducts] = useState<Product[]>([]);
     const [regionFilter, setRegionFilter] = useState('all');
     const [categoryFilter, setCategoryFilter] = useState('all');
@@ -94,9 +95,15 @@ export const useData = () => {
 
     const sortedFilteredProducts = useMemo(() => {
         // Filter by region
+        const availableSizesFilterArray = !availableSizesFilter? products : products.filter((product: any) => {
+          const sizes = JSON.parse(product.availableSizes);
+          const fewLeftSizes = sizes.filter((size: string) => size.includes("Few pieces left") || size.includes("Zostało tylko kilka sztuk!"));
+          return sizes.length >= availableSizesFilter &&  !(sizes.length === availableSizesFilter && fewLeftSizes.length === availableSizesFilter);
+      });
+
         const regionFilteredProducts = regionFilter === 'all' 
-            ? products 
-            : products.filter(product => product.region.toLowerCase() === regionFilter.toLowerCase());
+            ? availableSizesFilterArray 
+            : availableSizesFilterArray.filter(product => product.region.toLowerCase() === regionFilter.toLowerCase());
 
         // Further filter by category
         const categoryFilteredProducts = categoryFilter === 'all' 
@@ -123,7 +130,7 @@ export const useData = () => {
             });
 
             }
-    }, [products, regionFilter, categoryFilter, reasonFilter, sortBy]);
+    }, [products, regionFilter, categoryFilter, reasonFilter, sortBy, availableSizesFilter]);
 
 
 
@@ -143,7 +150,9 @@ export const useData = () => {
     setReasonFilter,
     handleDelete,
     sortBy,
-    setSortBy
+    setSortBy,
+    availableSizesFilter,
+    setAvailableSizesFilter
   };
 };
 

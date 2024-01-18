@@ -20,7 +20,9 @@ const MemberProducts: React.FC = () => {
         setCategoryFilter,
         handleDelete,
         sortBy,
-        setSortBy
+        setSortBy,
+        availableSizesFilter,
+        setAvailableSizesFilter
     } = useData();
 
 
@@ -60,6 +62,17 @@ const MemberProducts: React.FC = () => {
                         <MenuItem value="baby">Baby</MenuItem>
                         <MenuItem value="dziecko">Dziecko</MenuItem>
                         <MenuItem value="niemowleta">Niemowleta</MenuItem>
+                    </TextField>
+                    <TextField
+                        select
+                        label="Фільтр по кількості"
+                        value={availableSizesFilter}
+                        onChange={(e) => setAvailableSizesFilter(parseInt(e.target.value))}
+                        style={{ margin: '10px', minWidth: '140px' }}
+                    >
+                        <MenuItem value={0}>Будь-яка кількість</MenuItem>
+                        <MenuItem value={2}>{">= 2"}</MenuItem>
+                        <MenuItem value={3}>{">= 3"}</MenuItem>
                     </TextField>
                     <Button variant="contained" onClick={() => setIsConfirmDeleteModalOpen(true)}>
                         Видалити всі товари
