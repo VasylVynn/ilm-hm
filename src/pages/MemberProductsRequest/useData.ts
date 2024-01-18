@@ -12,6 +12,7 @@ export const useData = () => {
     const [status, setStatus] = useState('');  
     const [serverStatus, setServerStatus] = useState<ServerStatus|null>(null);
     const [memberCount, setMemberCount] = useState<number>(0);
+    const [isConfirmStopModalOpen, setIsConfirmStopModalOpen] = useState(false);
 
 
 const serverStatusText = useMemo(() => {
@@ -73,7 +74,7 @@ const serverStatusText = useMemo(() => {
       });
   };
 
-  const requestStopMemberTask = () => {
+ const requestStopMemberTask = () => {
     axios.post('https://wizz-app.net/api/stopScraping')
     .then((response) => {
       if (response.status === 200) {
@@ -107,7 +108,9 @@ const serverStatusText = useMemo(() => {
     serverStatusText,
     requestStopMemberTask,
     serverStatus,
-    memberCount
+    memberCount,
+    isConfirmStopModalOpen,
+    setIsConfirmStopModalOpen,
   };
 };
 

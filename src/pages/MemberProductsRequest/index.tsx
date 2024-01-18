@@ -18,7 +18,9 @@ const MemberProductsRequest: React.FC = () => {
         setStatus,
         serverStatusText,
         requestStopMemberTask,
-        serverStatus
+        serverStatus,
+        isConfirmStopModalOpen,
+        setIsConfirmStopModalOpen,
     } = useData();
 
 
@@ -34,7 +36,7 @@ const MemberProductsRequest: React.FC = () => {
                     <Typography variant="h5" color={'black'} component="h3" sx={{ marginBottom: '15px', whiteSpace: 'break-spaces' }}>
                         Стан серверу: {serverStatusText}
                     </Typography>
-                    {serverStatus?.memberTaskStatus && <Button sx={{ width: '100px', marginBottom: '20px' }} variant="contained" onClick={requestStopMemberTask}>
+                    {serverStatus?.memberTaskStatus && <Button sx={{ width: '100px', marginBottom: '20px' }} variant="contained" onClick={() => setIsConfirmStopModalOpen(true)}>
                         Зупинити
                     </Button>}
                 </Box>
@@ -72,6 +74,20 @@ const MemberProductsRequest: React.FC = () => {
                     setError('');
                     setStatus('');
                     window.location.reload();
+                }}
+            />
+            <Alert
+                title='Увага!'
+                content={'Ви впевнені що хочете зупинити перевірку товарів?'}
+                confirmText="Так"
+                cancelText="Ні"
+                isOpen={isConfirmStopModalOpen}
+                onCancel={() => {
+                    setIsConfirmStopModalOpen(false);
+                }}
+                onConfirm={() => {
+                    requestStopMemberTask();
+                    setIsConfirmStopModalOpen(false);
                 }}
             />
         </>
