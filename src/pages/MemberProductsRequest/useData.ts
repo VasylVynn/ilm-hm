@@ -32,7 +32,7 @@ const serverStatusText = useMemo(() => {
 }, [serverStatus]);
 
     const checkServerStatus = () => {
-      axios.get('http://localhost:3000/api/jobsStatus')
+      axios.get('https://wizz-app.net/api/jobsStatus')
         .then(response => {
           setServerStatus(response.data);
         })
@@ -42,7 +42,7 @@ const serverStatusText = useMemo(() => {
     }
 
     const checkMemberCount = () => {
-      axios.get('http://localhost:3000/api/checkMemberCount')
+      axios.get('https://wizz-app.net/api/checkMemberCount')
         .then(response => {
           setMemberCount(response.data.memberCount);
         })
@@ -57,7 +57,7 @@ const serverStatusText = useMemo(() => {
     }, []);
   
     const requestScraping = () => {
-      axios.post('http://localhost:3000/api/startScraping',
+      axios.post('https://wizz-app.net/api/startScraping',
       {
           url: link,
       })
@@ -74,7 +74,7 @@ const serverStatusText = useMemo(() => {
   };
 
   const requestStopMemberTask = () => {
-    axios.post('http://localhost:3000/api/stopScraping')
+    axios.post('https://wizz-app.net/api/stopScraping')
     .then((response) => {
       if (response.status === 200) {
       setStatus('stopped')

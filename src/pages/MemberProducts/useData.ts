@@ -31,7 +31,7 @@ export const useData = () => {
     }, []);
   
     const fetchProducts = () => {
-      axios.get('http://localhost:3000/api/memberSizes')
+      axios.get('https://wizz-app.net/api/memberSizes')
         .then(response => {
           setProducts(response.data);
         })
@@ -41,7 +41,7 @@ export const useData = () => {
     };
   
     function deleteProduct(articleCode: string) {
-        axios.delete(`http://localhost:3000/api/memberSizes/${articleCode}`)
+        axios.delete(`https://wizz-app.net/api/memberSizes/${articleCode}`)
             .then(() => {
                 // Refresh the product list
                 fetchProducts();
@@ -52,7 +52,7 @@ export const useData = () => {
     }
   
     const deleteAllProducts = () => {
-      axios.delete('http://localhost:3000/api/memberSizes')
+      axios.delete('https://wizz-app.net/api/memberSizes')
         .then(() => {
           // Refresh the product list
           fetchProducts();
@@ -66,7 +66,7 @@ export const useData = () => {
         const region = regionFilter === 'all' ? '' : regionFilter;
         const category = categoryFilter === 'all' ? '' : categoryFilter;
 
-      axios.delete(`http://localhost:3000/api/memberSizes/delete?region=${region}&category=${category}&reason=''}`)
+      axios.delete(`https://wizz-app.net/api/memberSizes/delete?region=${region}&category=${category}&reason=''}`)
         .then(() => {
           // Refresh the product list
           fetchProducts();
