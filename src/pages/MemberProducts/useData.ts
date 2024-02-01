@@ -115,11 +115,11 @@ export const useData = () => {
                     return dateB.getTime() - dateA.getTime(); // Descending order of date
                 });
             } else{
-                return categoryFilteredProducts.sort((a, b) => {
-                    const salePercentA = parseInt(a.salePercent.replace('-', '').replace('%', ''), 10);
-                    const salePercentB = parseInt(b.salePercent.replace('-', '').replace('%', ''), 10);
-                    return salePercentB - salePercentA; // Descending order of salePercent
-                });
+              return categoryFilteredProducts.sort((a, b) => {
+                const salePercentA = a.salePercent ? parseInt(a.salePercent.replace('-', '').replace('%', ''), 10) : 0;
+                const salePercentB = b.salePercent ? parseInt(b.salePercent.replace('-', '').replace('%', ''), 10) : 0;
+                return salePercentB - salePercentA; // Descending order of salePercent
+            });
             }
 
             
