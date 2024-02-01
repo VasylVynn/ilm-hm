@@ -124,8 +124,8 @@ export const useData = () => {
                
             } else {
               return reasonFilteredProducts.sort((a, b) => {
-                const salePercentA = parseInt(a.salePercent.replace('-', '').replace('%', ''), 10);
-                const salePercentB = parseInt(b.salePercent.replace('-', '').replace('%', ''), 10);
+                const salePercentA = a.salePercent ? parseInt(a.salePercent.replace('-', '').replace('%', ''), 10) : 0;
+                const salePercentB = b.salePercent ? parseInt(b.salePercent.replace('-', '').replace('%', ''), 10) : 0;
                 return salePercentB - salePercentA; // Descending order of salePercent
             });
 
