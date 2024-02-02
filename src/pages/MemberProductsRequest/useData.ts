@@ -30,7 +30,7 @@ const serverStatusText = useMemo(() => {
 
   return 'Сервер вільний.';
 
-}, [serverStatus]);
+}, [serverStatus,memberCount]);
 
     const checkServerStatus = () => {
       axios.get('https://wizz-app.net/api/jobsStatus')

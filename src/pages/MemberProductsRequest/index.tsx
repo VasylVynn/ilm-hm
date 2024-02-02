@@ -44,6 +44,7 @@ const MemberProductsRequest: React.FC = () => {
                     <Typography variant="body1" color={'black'} component="h3" sx={{ marginBottom: '15px' }}>
                         Вкажіть посилання на список товарів h&m. Всі товари які є в цьому посиланні будуть перевірені на наявність розмірів і додані в розділ "Товари Member Prices".
                         Якщо в товарі є member price, тоді автоматично буде пораховано відсоток знижки та ціну з знижкою. Якщо member price відсутня тоді знижки вказано не буде.  </Typography>
+                    <Typography variant="body1" color={'red'} component="h2" sx={{ marginBottom: '15px' }}>На даний момент перевірка товарів GB не працює.</Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '15px', maxWidth: '500px', gap: '20px' }}>
                         <TextField
                             sx={{ width: '100%' }}
@@ -56,10 +57,6 @@ const MemberProductsRequest: React.FC = () => {
                         </Button>
                     </Box>
                 </Box>
-
-
-
-
             </Container>
             <Alert
                 title={!!error ? 'Помилка' : 'Успіх'}
