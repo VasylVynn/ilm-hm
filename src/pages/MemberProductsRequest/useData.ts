@@ -56,11 +56,15 @@ const serverStatusText = useMemo(() => {
       checkServerStatus();
       checkMemberCount();
     }, []);
+
+    interface requestScrapingProps {
+      url: string;
+    }
   
-    const requestScraping = () => {
+    const requestScraping = ({url}:requestScrapingProps) => {
       axios.post('https://wizz-app.net/api/startScraping',
       {
-          url: link,
+          url,
       })
       .then((response) => {
         if (response.status === 200) {
@@ -68,7 +72,7 @@ const serverStatusText = useMemo(() => {
         } else {
           console.log('Unexpected status code:', response.status);
         }
-    })      .catch(error => {
+    }).catch(error => {
           console.error('There was an error deleting all products:', error);
           setError(error.response.data.error);
       });
@@ -88,9 +92,17 @@ const serverStatusText = useMemo(() => {
     });}
    
 
-  const handleRequest = async () => {
+    interface handleRequestProps {
+      customLink?: string;
+    }
+
+  const handleRequest = async ({customLink}:handleRequestProps) => {
     if (link !== '') {
-       await requestScraping();
+       await requestScraping({url:link});
+    } else if (customLink) {
+      await requestScraping({url:customLink});
+    } else {
+      return;
     }
 }
 

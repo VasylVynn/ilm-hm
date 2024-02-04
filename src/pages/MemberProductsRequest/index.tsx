@@ -44,7 +44,7 @@ const MemberProductsRequest: React.FC = () => {
                     <Typography variant="body1" color={'black'} component="h3" sx={{ marginBottom: '15px' }}>
                         Вкажіть посилання на список товарів h&m. Всі товари які є в цьому посиланні будуть перевірені на наявність розмірів і додані в розділ "Товари Member Prices".
                         Якщо в товарі є member price, тоді автоматично буде пораховано відсоток знижки та ціну з знижкою. Якщо member price відсутня тоді знижки вказано не буде.  </Typography>
-                    <Typography variant="body1" color={'red'} component="h2" sx={{ marginBottom: '15px' }}>На даний момент перевірка товарів GB не працює.</Typography>
+                    <Typography variant="body1" color={'red'} component="h2" sx={{ marginBottom: '15px' }}>На даний момент перевірка товарів GB за посиланням не працює.</Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '15px', maxWidth: '500px', gap: '20px' }}>
                         <TextField
                             sx={{ width: '100%' }}
@@ -52,10 +52,20 @@ const MemberProductsRequest: React.FC = () => {
                             value={link}
                             onChange={(e) => setLink(e.target.value)}
                         />
-                        <Button variant="contained" onClick={handleRequest}>
+                        <Button variant="contained" onClick={() => handleRequest({ customLink: '' })}>
                             Відправити
                         </Button>
                     </Box>
+                    <Typography marginBottom={2} paddingTop={2} variant="body1" color={'red'} component="h3" sx={{ marginTop: '15px' }}>
+                        Щоб перевірити товари SALE GB натисніть на відповідну кнопку нижче.
+                    </Typography>
+                    <Button variant="contained" sx={{ marginRight: '20px' }} onClick={() => handleRequest({ customLink: 'https://www2.hm.com/en_gb/sale/kids/products.html' })}>
+                        SALE KIDS GB
+                    </Button>
+                    <Button variant="contained" onClick={() => handleRequest({ customLink: 'https://www2.hm.com/en_gb/sale/baby/products.html' })}>
+                        SALE BABY GB
+                    </Button>
+
                 </Box>
             </Container>
             <Alert
