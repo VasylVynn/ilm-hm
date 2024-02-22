@@ -1,8 +1,12 @@
-import { Card, CardMedia, CardContent, Typography, useMediaQuery, useTheme, Divider, IconButton, Box } from '@mui/material';
+import { CardMedia, CardContent, Typography, Divider, IconButton, Box, Chip } from '@mui/material';
 import { Product } from '../../pages/Dashboard/useData';
 import CloseIcon from '@mui/icons-material/Close'; // Import Close Icon
+import { format } from 'date-fns';
+import { uk } from 'date-fns/locale';
 
-import FlagIcon from '../FlagIcon';
+import { StyledCard } from './styles';
+import Flag from 'react-world-flags';
+
 
 interface ProductCardProps {
     product: Product;
@@ -10,14 +14,6 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
-
-    const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
-    const cardStyle = {
-        width: isSmallScreen ? '100%' : '23%', // 100% width on small screens, 23% otherwise
-        margin: '10px',
-    };
 
     const renderSizes = () => {
         const sizes = JSON.parse(product.availableSizes);
@@ -51,7 +47,8 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
 
         return (
             <Typography variant="body2" color="text.secondary">
-                {translatedReason}
+                {translatedReason} {''}
+                {format(new Date(product.date), 'dd MMMM HH:mm', { locale: uk })}
             </Typography>
         );
     };
@@ -62,19 +59,25 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
     };
 
     return (
-        <Card style={cardStyle} sx={{ position: 'relative' }}>
-            <IconButton onClick={handleDelete} style={{ position: 'absolute', right: 0, top: 0 }}>
+        <StyledCard >
+            {product.salePercent && <Chip className='sale-chip' label={product.salePercent} color='default' variant="outlined" />}
+            <IconButton onClick={handleDelete}>
                 <CloseIcon />
             </IconButton>
             <a href={product.link} target='_blank'>
-
-                <CardMedia
-                    component="img"
-                    height="220"
-                    image={product.imageLink}
-                    alt={product.articleCode}
-                />
-                <CardContent sx={{ height: 'calc(100% - 220px)', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ position: 'relative' }}>
+                    <CardMedia
+                        component="img"
+                        height="220"
+                        image={product.imageLink}
+                        alt={product.articleCode}
+                    />
+                    {product.salePercent && <Box className='category-chip'  >
+                        {product.category}
+                        <Flag code={product.region} height="24" width='28' />
+                    </Box>}
+                </Box>
+                <CardContent >
                     {product.name && <Typography variant="body2" color="text.secondary">
                         {product.name}
                     </Typography>}
@@ -83,34 +86,23 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
                     </Typography>
                     <Divider style={{ margin: '5px 0' }} />
                     <Typography variant="body2" color="text.secondary">
-                        Знижка: {product.salePercent || 'Відсутня'}
-                    </Typography>
-                    <Divider style={{ margin: '5px 0' }} />
-                    <Typography variant="body2" color="text.secondary">
-                        {product.priceSale && `Ціна з знижкою: ${product.priceSale}`}
+                        {product.priceSale && <>Ціна з знижкою: <b>{product.priceSale}</b></>}
                         {product.priceSale && <br />}
-                        {`Ціна ${product.priceSale ? 'без знижки' : ''}: ${product.priceRegular}`}
+                        {`Ціна ${product.priceSale ? 'без знижки' : ''}: `}<b>{product.priceRegular}</b>
                     </Typography>
                     <Divider style={{ margin: '5px 0' }} />
                     <Typography variant="body2" color="text.secondary">
                         Доступні розміри:
                     </Typography>
-                    <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                    <div >
                         {renderSizes()}
                     </div>
-                    {renderReason()}
                     <Divider style={{ margin: '5px 0' }} />
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
-                        {<Typography variant="body2" color="text.secondary">
-                            Категорія: {product.category}
-                        </Typography>}
-                        <FlagIcon isoCode={product.region} />
-                    </Box>
-
+                    {renderReason()}
                 </CardContent>
             </a>
 
-        </Card >
+        </StyledCard >
     );
 };
 
