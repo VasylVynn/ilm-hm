@@ -23,7 +23,7 @@ export const useData = () => {
   const [regionFilter, setRegionFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
 
 
   useEffect(() => {
@@ -31,12 +31,15 @@ export const useData = () => {
   }, []);
 
   const fetchProducts = () => {
+    setIsLoading(true);
     axios.get('https://wizz-app.net/api/memberSizes')
       .then(response => {
         setProducts(response.data);
       })
       .catch(error => {
         console.error('There was an error fetching the product data:', error);
+      }).finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -143,7 +146,8 @@ export const useData = () => {
     sortBy,
     setSortBy,
     availableSizesFilter,
-    setAvailableSizesFilter
+    setAvailableSizesFilter,
+    isLoading
   };
 };
 

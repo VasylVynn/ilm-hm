@@ -1,4 +1,4 @@
-import { Typography, Box, AppBar, Toolbar, Button } from '@mui/material';
+import { Typography, Box, AppBar, Toolbar, Button, Divider } from '@mui/material';
 import { routes } from '../../App';
 import { useAuth } from '../../AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -21,15 +21,19 @@ export const Header = () => {
                     Товари H&M
                 </Typography>
                 <Box sx={{ flexGrow: 1, display: 'flex', marginRight: 'auto' }}>
-                    {routes.slice(1, 4).map((page) => (
-                        <Button
-                            key={page.path}
-                            onClick={() => navigate(page.path)}
-                            variant={page.path === window.location.pathname ? 'contained' : 'outlined'}
-                            sx={{ marginRight: '10px' }}
-                        >
-                            {page.name}
-                        </Button>
+                    {routes.slice(1, 6).map((page) => (
+                        <>
+                            {page.path === '/c-and-a-manual' && <Divider sx={{ marginRight: '10px' }} orientation="vertical" flexItem />}
+                            <Button
+                                key={page.path}
+                                onClick={() => navigate(page.path)}
+                                variant={page.path === window.location.pathname ? 'contained' : 'outlined'}
+                                sx={{ marginRight: '10px' }}
+                            >
+                                {page.name}
+                            </Button>
+                        </>
+
                     ))}
                 </Box>
                 <Button variant="contained" onClick={handleLogout}>

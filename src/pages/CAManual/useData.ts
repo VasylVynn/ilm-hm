@@ -22,7 +22,6 @@ export const useData = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [regionFilter, setRegionFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
-  const [reasonFilter, setReasonFilter] = useState('all');
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,7 +33,7 @@ export const useData = () => {
 
   const fetchProducts = () => {
     setIsLoading(true);
-    axios.get('https://wizz-app.net/api/sizes')
+    axios.get('https://ca.wizz-app.net/api/memberSizes')
       .then(response => {
         setProducts(response.data);
       })
@@ -46,7 +45,7 @@ export const useData = () => {
   };
 
   function deleteProduct(articleCode: string) {
-    axios.delete(`https://wizz-app.net/api/sizes/${articleCode}`)
+    axios.delete(`https://ca.wizz-app.net/api/memberSizes/${articleCode}`)
       .then(() => {
         // Refresh the product list
         fetchProducts();
@@ -57,7 +56,7 @@ export const useData = () => {
   }
 
   const deleteAllProducts = () => {
-    axios.delete('https://wizz-app.net/api/sizes')
+    axios.delete('https://ca.wizz-app.net/api/memberSizes')
       .then(() => {
         // Refresh the product list
         fetchProducts();
@@ -70,9 +69,8 @@ export const useData = () => {
   const deleteProducts = () => {
     const region = regionFilter === 'all' ? '' : regionFilter;
     const category = categoryFilter === 'all' ? '' : categoryFilter;
-    const reason = reasonFilter === 'all' ? '' : reasonFilter;
 
-    axios.delete(`https://wizz-app.net/api/sizes/delete?region=${region}&category=${category}&reason=${reason}`)
+    axios.delete(`https://ca.wizz-app.net/api/memberSizes/delete?region=${region}&category=${category}`)
       .then(() => {
         // Refresh the product list
         fetchProducts();
@@ -85,7 +83,7 @@ export const useData = () => {
 
   const handleDelete = () => {
     // Delete all products
-    if (regionFilter === 'all' && categoryFilter === 'all' && reasonFilter === 'all') {
+    if (regionFilter === 'all' && categoryFilter === 'all') {
       deleteAllProducts();
     } else {
       // Delete filtered products
@@ -94,45 +92,42 @@ export const useData = () => {
     setIsConfirmDeleteModalOpen(false);
   }
 
-
   const sortedFilteredProducts = useMemo(() => {
-    // Filter by region
+
+
     const availableSizesFilterArray = !availableSizesFilter ? products : products.filter((product: any) => {
       const sizes = JSON.parse(product.availableSizes);
       const fewLeftSizes = sizes.filter((size: string) => size.includes("Few pieces left") || size.includes("Zostało tylko kilka sztuk!"));
       return sizes.length >= availableSizesFilter && !(sizes.length === availableSizesFilter && fewLeftSizes.length === availableSizesFilter);
     });
-
+    // Filter by region
     const regionFilteredProducts = regionFilter === 'all'
       ? availableSizesFilterArray
       : availableSizesFilterArray.filter(product => product.region.toLowerCase() === regionFilter.toLowerCase());
+
+
 
     // Further filter by category
     const categoryFilteredProducts = categoryFilter === 'all'
       ? regionFilteredProducts
       : regionFilteredProducts.filter(product => product.category === categoryFilter);
 
-    // Further filter by reason
-    const reasonFilteredProducts = reasonFilter === 'all'
-      ? categoryFilteredProducts
-      : categoryFilteredProducts.filter(product => product.reason === reasonFilter);
-
     if (sortBy === 'dateAdding') {
-      return reasonFilteredProducts.sort((a, b) => {
+      return categoryFilteredProducts.sort((a, b) => {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
         return dateB.getTime() - dateA.getTime(); // Descending order of date
       });
-
     } else {
-      return reasonFilteredProducts.sort((a, b) => {
+      return categoryFilteredProducts.sort((a, b) => {
         const salePercentA = a.salePercent ? parseInt(a.salePercent.replace('-', '').replace('%', ''), 10) : 0;
         const salePercentB = b.salePercent ? parseInt(b.salePercent.replace('-', '').replace('%', ''), 10) : 0;
         return salePercentB - salePercentA; // Descending order of salePercent
       });
-
     }
-  }, [products, regionFilter, categoryFilter, reasonFilter, sortBy, availableSizesFilter]);
+
+
+  }, [products, regionFilter, categoryFilter, sortBy, availableSizesFilter]);
 
 
 
@@ -148,8 +143,6 @@ export const useData = () => {
     setIsConfirmDeleteModalOpen,
     categoryFilter,
     setCategoryFilter,
-    reasonFilter,
-    setReasonFilter,
     handleDelete,
     sortBy,
     setSortBy,

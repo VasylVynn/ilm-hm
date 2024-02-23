@@ -4,6 +4,8 @@ import Dashboard from './pages/Dashboard';
 import { AuthProvider } from './AuthContext';
 import MemberProducts from './pages/MemberProducts';
 import MemberProductsRequest from './pages/MemberProductsRequest';
+import CAManual from './pages/CAManual';
+import CAManualRequest from './pages/CAManualRequest';
 
 export const routes = [
   {
@@ -14,17 +16,27 @@ export const routes = [
   {
     path: '/dashboard',
     element: <Dashboard />,
-    name: 'Товари (нові)'
+    name: 'H&M (нові)'
   },
   {
     path: '/memberPrices',
     element: <MemberProducts />,
-    name: 'Товари Member Prices'
+    name: 'H&M Додано вручну'
   },
   {
     path: '/memberPrices/request',
     element: <MemberProductsRequest />,
-    name: 'Додати товари Member Prices'
+    name: 'Додати товари H&M'
+  },
+  {
+    path: '/c-and-a-manual',
+    element: <CAManual />,
+    name: 'C&A Додано вручну'
+  },
+  {
+    path: '/c-and-a-manual/request',
+    element: <CAManualRequest />,
+    name: 'Додати товари C&A'
   }
 ]
 

@@ -25,7 +25,8 @@ const Dashboard: React.FC = () => {
         sortBy,
         setSortBy,
         availableSizesFilter,
-        setAvailableSizesFilter
+        setAvailableSizesFilter,
+        isLoading
     } = useData();
 
 
@@ -103,11 +104,11 @@ const Dashboard: React.FC = () => {
                 <Typography gutterBottom variant="h5" color={'black'} >
                     Кількість товарів: {sortedFilteredProducts.length}
                 </Typography>
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                {isLoading ? <Typography variant="h5" color={'black'} >Завантаження...</Typography> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {sortedFilteredProducts.map(product => (
                         <ProductCard key={product.articleCode} product={product} onDelete={deleteProduct} />
                     ))}
-                </div>
+                </div>}
             </Container>
             <Alert
                 title="Ви впевнені що хочете видалити всі товари?"

@@ -11,9 +11,12 @@ import Flag from 'react-world-flags';
 interface ProductCardProps {
     product: Product;
     onDelete: (articleCode: string) => void; // Type for delete function
+    type?: string;
 }
 
-export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
+export const ProductCard = ({ product, onDelete, type = 'h&m' }: ProductCardProps) => {
+
+    const cAUrl = 'https://www.c-and-a.com/img/product/q_auto:good,b_rgb:FAFAFA,c_scale,w_262/';
 
     const renderSizes = () => {
         const sizes = JSON.parse(product.availableSizes);
@@ -64,12 +67,12 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
             <IconButton onClick={handleDelete}>
                 <CloseIcon />
             </IconButton>
-            <a href={product.link} target='_blank'>
+            <a href={type === 'h&m' ? product.link : 'https://www.c-and-a.com' + product.link} target='_blank'>
                 <Box sx={{ position: 'relative' }}>
                     <CardMedia
                         component="img"
                         height="220"
-                        image={product.imageLink}
+                        image={type === 'h&m' ? product.imageLink : cAUrl + product.imageLink}
                         alt={product.articleCode}
                     />
                     {product.salePercent && <Box className='category-chip'  >

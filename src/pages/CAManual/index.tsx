@@ -6,7 +6,7 @@ import ProductCard from "../../components/ProductCard";
 import Alert from "../../components/Alert";
 import Header from "../../components/Header";
 
-const MemberProducts: React.FC = () => {
+const CAManual: React.FC = () => {
 
     const auth = useAuth();
 
@@ -47,9 +47,7 @@ const MemberProducts: React.FC = () => {
                         style={{ margin: '10px', minWidth: '140px' }}
                     >
                         <MenuItem value="all">Всі</MenuItem>
-                        <MenuItem value="us">US</MenuItem>
-                        <MenuItem value="gb">GB</MenuItem>
-                        <MenuItem value="pl">PL</MenuItem>
+                        <MenuItem value="PL">PL</MenuItem>
                     </TextField>
                     <TextField
                         select
@@ -59,10 +57,8 @@ const MemberProducts: React.FC = () => {
                         style={{ margin: '10px', minWidth: '140px' }}
                     >
                         <MenuItem value="all">Всі</MenuItem>
-                        <MenuItem value="kids">Kids</MenuItem>
-                        <MenuItem value="baby">Baby</MenuItem>
-                        <MenuItem value="dziecko">Dziecko</MenuItem>
-                        <MenuItem value="niemowleta">Niemowleta</MenuItem>
+                        <MenuItem value="Wyprzedaż dzieci">Dziecko</MenuItem>
+                        <MenuItem value="Wyprzedaż niemowlęta">Niemowleta</MenuItem>
                     </TextField>
                     <TextField
                         select
@@ -95,7 +91,7 @@ const MemberProducts: React.FC = () => {
                 </Typography>
                 {isLoading ? <Typography variant="h5" color={'black'} >Завантаження...</Typography> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {sortedFilteredProducts.map(product => (
-                        <ProductCard key={product.articleCode} product={product} onDelete={deleteProduct} />
+                        <ProductCard type="c&a" key={product.articleCode} product={product} onDelete={deleteProduct} />
                     ))}
                 </div>}
             </Container>
@@ -110,4 +106,4 @@ const MemberProducts: React.FC = () => {
     );
 }
 
-export default MemberProducts;
+export default CAManual;
