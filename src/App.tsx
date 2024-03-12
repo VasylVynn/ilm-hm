@@ -6,13 +6,9 @@ import MemberProducts from './pages/MemberProducts';
 import MemberProductsRequest from './pages/MemberProductsRequest';
 import CAManual from './pages/CAManual';
 import CAManualRequest from './pages/CAManualRequest';
+import CAAuto from './pages/CAAuto';
 
-export const routes = [
-  {
-    path: '/',
-    element: <Login />,
-    name: 'Логін'
-  },
+export const hMRoutes = [
   {
     path: '/dashboard',
     element: <Dashboard />,
@@ -27,6 +23,14 @@ export const routes = [
     path: '/memberPrices/request',
     element: <MemberProductsRequest />,
     name: 'Додати товари H&M'
+  }
+]
+
+export const cARoutes = [
+  {
+    path: '/c-and-a-auto',
+    element: <CAAuto />,
+    name: 'C&A (нові)'
   },
   {
     path: '/c-and-a-manual',
@@ -37,7 +41,18 @@ export const routes = [
     path: '/c-and-a-manual/request',
     element: <CAManualRequest />,
     name: 'Додати товари C&A'
-  }
+  },
+]
+
+
+export const routes = [
+  {
+    path: '/',
+    element: <Login />,
+    name: 'Логін'
+  },
+  ...hMRoutes,
+  ...cARoutes
 ]
 
 
