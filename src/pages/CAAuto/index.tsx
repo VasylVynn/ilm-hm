@@ -105,7 +105,7 @@ const CAAuto: React.FC = () => {
                 </Typography>
                 {isLoading ? <Typography variant="h5" color={'black'} >Завантаження...</Typography> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {sortedFilteredProducts.map(product => (
-                        <ProductCard key={product.articleCode} product={product} onDelete={deleteProduct} />
+                        <ProductCard type="cA" key={product.articleCode} product={product} onDelete={deleteProduct} />
                     ))}
                 </div>}
             </Container>
