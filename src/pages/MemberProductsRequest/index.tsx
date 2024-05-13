@@ -1,4 +1,4 @@
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import { useData } from "./useData";
@@ -9,8 +9,7 @@ const MemberProductsRequest: React.FC = () => {
 
     const auth = useAuth();
 
-    const { link,
-        setLink,
+    const {
         handleRequest,
         error,
         setError,
@@ -41,7 +40,7 @@ const MemberProductsRequest: React.FC = () => {
                     </Button>}
                 </Box>
                 <Box>
-                    <Typography variant="body1" color={'black'} component="h3" sx={{ marginBottom: '15px' }}>
+                    {/* <Typography variant="body1" color={'black'} component="h3" sx={{ marginBottom: '15px' }}>
                         Вкажіть посилання на список товарів h&m. Всі товари які є в цьому посиланні будуть перевірені на наявність розмірів і додані в розділ "Товари Member Prices".
                         Якщо в товарі є member price, тоді автоматично буде пораховано відсоток знижки та ціну з знижкою. Якщо member price відсутня тоді знижки вказано не буде.  </Typography>
                     <Typography variant="body1" color={'red'} component="h2" sx={{ marginBottom: '15px' }}>На даний момент перевірка товарів GB та PL за посиланням не працює.</Typography>
@@ -55,7 +54,16 @@ const MemberProductsRequest: React.FC = () => {
                         <Button variant="contained" onClick={() => handleRequest({ customLink: '' })}>
                             Відправити
                         </Button>
-                    </Box>
+                    </Box> */}
+                    <Typography marginBottom={2} paddingTop={2} variant="body1" color={'red'} component="h3" sx={{ marginTop: '15px' }}>
+                        Щоб перевірити товари SALE US натисніть на відповідну кнопку нижче.
+                    </Typography>
+                    <Button variant="contained" sx={{ marginRight: '20px' }} onClick={() => handleRequest({ customLink: 'https://www2.hm.com/en_us/sale/kids/products.html' })}>
+                        SALE KIDS US
+                    </Button>
+                    <Button variant="contained" onClick={() => handleRequest({ customLink: 'https://www2.hm.com/en_us/sale/baby/products.html' })}>
+                        SALE BABY US
+                    </Button>
                     <Typography marginBottom={2} paddingTop={2} variant="body1" color={'red'} component="h3" sx={{ marginTop: '15px' }}>
                         Щоб перевірити товари SALE GB натисніть на відповідну кнопку нижче.
                     </Typography>

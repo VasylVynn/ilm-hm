@@ -28,8 +28,8 @@ export const ProductCard = ({ product, onDelete, type = 'h&m' }: ProductCardProp
             );
         }
         return sizes.map((size: string) => {
-            const isFewLeft = size.includes("Few pieces left") || size.includes("Zostało tylko kilka sztuk!");
-            const displaySize = isFewLeft ? size.replace("Few pieces left", "").replace("Zostało tylko kilka sztuk!", "").trim() : size;
+            const isFewLeft = size.includes("(Few pieces left)") || size.includes("Zostało tylko kilka sztuk!");
+            const displaySize = isFewLeft ? size.replace("(Few pieces left)", "").replace("Zostało tylko kilka sztuk!", "").trim() : size;
             return (
                 <Typography key={size} variant="body2" component="span" color={isFewLeft ? "red" : "text.secondary"}>
                     {`${displaySize},`}
