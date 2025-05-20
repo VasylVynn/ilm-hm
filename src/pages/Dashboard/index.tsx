@@ -1,4 +1,4 @@
-import { Box, Button, Container, MenuItem, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, MenuItem, Pagination, TextField, Typography } from "@mui/material";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import { useData } from "./useData";
@@ -11,7 +11,7 @@ const Dashboard: React.FC = () => {
     const auth = useAuth();
 
     const {
-        deleteProduct,
+        paginatedProducts,
         sortedFilteredProducts,
         regionFilter,
         setRegionFilter,
@@ -19,14 +19,22 @@ const Dashboard: React.FC = () => {
         setIsConfirmDeleteModalOpen,
         categoryFilter,
         setCategoryFilter,
-        reasonFilter,
-        setReasonFilter,
-        handleDelete,
+        deleteProducts,
         sortBy,
         setSortBy,
         availableSizesFilter,
         setAvailableSizesFilter,
-        isLoading
+        isLoading,
+        requestScraping,
+        checkstatus,
+        requestStatus,
+        // isRequestModalOpen,
+        setRequestStatus,
+        handleDelete,
+        deleteStatus,
+        handlePageChange,
+        currentPage,
+        totalPages
     } = useData();
 
 
@@ -46,7 +54,10 @@ const Dashboard: React.FC = () => {
                         select
                         label="Фільтр по країні"
                         value={regionFilter}
-                        onChange={(e) => setRegionFilter(e.target.value)}
+                        onChange={(e) => {
+                            handlePageChange(e, 1);
+                            setRegionFilter(e.target.value)
+                        }}
                         style={{ margin: '10px', minWidth: '140px' }}
                     >
                         <MenuItem value="all">Всі</MenuItem>
@@ -57,38 +68,45 @@ const Dashboard: React.FC = () => {
                         select
                         label="Фільтр по категорії"
                         value={categoryFilter}
-                        onChange={(e) => setCategoryFilter(e.target.value)}
+                        onChange={(e) => {
+                            handlePageChange(e, 1);
+                            setCategoryFilter(e.target.value)
+                        }}
                         style={{ margin: '10px', minWidth: '140px' }}
                     >
                         <MenuItem value="all">Всі</MenuItem>
-                        <MenuItem value="kids">Kids</MenuItem>
-                        <MenuItem value="baby">Baby</MenuItem>
-                    </TextField>
-                    <TextField
-                        select
-                        label="Фільтр по причині"
-                        value={reasonFilter}
-                        onChange={(e) => setReasonFilter(e.target.value)}
-                        style={{ margin: '10px', minWidth: '140px' }}
-                    >
-                        <MenuItem value="all">Всі</MenuItem>
-                        <MenuItem value="isNew">Новий товар</MenuItem>
-                        <MenuItem value="isUpdated">Змінилась ціна</MenuItem>
+                        <MenuItem value="Newborn">Newborn</MenuItem>
+                        <MenuItem value="Baby">Baby</MenuItem>
+                        <MenuItem value="Kids 2-8">Kids 2-8</MenuItem>
+                        <MenuItem value="Kids 9-14">Kids 9-14</MenuItem>
                     </TextField>
                     <TextField
                         select
                         label="Фільтр по кількості"
                         value={availableSizesFilter}
-                        onChange={(e) => setAvailableSizesFilter(parseInt(e.target.value))}
+                        onChange={(e) => {
+                            handlePageChange(e, 1);
+                            setAvailableSizesFilter(parseInt(e.target.value))
+                        }}
                         style={{ margin: '10px', minWidth: '140px' }}
                     >
                         <MenuItem value={0}>Будь-яка кількість</MenuItem>
                         <MenuItem value={2}>{">= 2"}</MenuItem>
                         <MenuItem value={3}>{">= 3"}</MenuItem>
+                        <MenuItem value={4}>{">= 4"}</MenuItem>
+                        <MenuItem value={5}>{">= 5"}</MenuItem>
                     </TextField>
-                    <Button variant="contained" onClick={() => setIsConfirmDeleteModalOpen(true)}>
-                        Видалити всі товари
+                </Box>
+                <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '15px' }}>
+
+                    <Button variant="contained" onClick={requestScraping}>
+                        Запсутити
                     </Button>
+                    <Button variant="contained" onClick={handleDelete}>
+                        Видалити товари
+                    </Button>
+                    <Button variant="contained" onClick={checkstatus}>
+                        Перевірити статус                    </Button>
                 </Box>
                 <TextField
                     select
@@ -105,19 +123,52 @@ const Dashboard: React.FC = () => {
                     Кількість товарів: {sortedFilteredProducts.length}
                 </Typography>
                 {isLoading ? <Typography variant="h5" color={'black'} >Завантаження...</Typography> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-                    {sortedFilteredProducts.map(product => (
-                        <ProductCard key={product.articleCode} product={product} onDelete={deleteProduct} />
+                    {paginatedProducts.map(product => (
+                        <ProductCard key={product.articleCode} product={product} />
                     ))}
                 </div>}
+                {/* Pagination Controls */}
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px', paddingBottom: '40px' }}>
+                    <Pagination
+                        count={totalPages}
+                        page={currentPage}
+                        onChange={handlePageChange}
+                        variant="outlined"
+                        color="primary"
+                    />
+                </Box>
             </Container>
+
+            {/* {scrapingStatus && <Alert
+                title="Статус парсера"
+                content={
+                    <div>
+                        <p>
+                            Парсер запущено: {scrapingStatus.is_scraper_running
+                                ? "Так" : "Ні"}
+                        </p>
+                        <p>
+                            Прогрес: {scrapingStatus.progres}
+                        </p>
+                    </div>}
+                confirmText="Закрити"
+                isOpen={isCheckModalOpen}
+                onCancel={() => setIsCheckModalOpen(false)}
+                onConfirm={() => setIsCheckModalOpen(false)}
+            />} */}
+            <Alert
+                title="Парсер запущено"
+                content="Оновіть сторінку через 5-10 хвилин"
+                confirmText="Підтвердити"
+                isOpen={requestStatus === 'success'}
+                onCancel={() => setRequestStatus(null)}
+                onConfirm={() => setRequestStatus(null)} />
             <Alert
                 title="Ви впевнені що хочете видалити всі товари?"
-                content=" Будуть виладені всі товари які зараз відфільтровані,
-                або всі товари якщо фільтри не обрано.
-                Після видалення товари не можливо буде відновити!"
+                content={deleteStatus ? deleteStatus : "Будуть виладені всі товари H&M. Після видалення товари не можливо буде відновити!"}
                 cancelText="Скасувати"
                 confirmText="Підтвердити"
-                isOpen={isConfirmDeleteModalOpen} onCancel={() => setIsConfirmDeleteModalOpen(false)} onConfirm={handleDelete} />
+                isOpen={isConfirmDeleteModalOpen} onCancel={() => setIsConfirmDeleteModalOpen(false)} onConfirm={deleteProducts} />
         </>
     );
 }

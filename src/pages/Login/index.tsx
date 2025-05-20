@@ -12,7 +12,7 @@ const Login: React.FC = () => {
 
     useEffect(() => {
         if (auth.isLoggedIn) {
-            navigate('/dashboard');
+            navigate('/h-and-m');
         }
     }, [auth.isLoggedIn, navigate]);
 
@@ -22,7 +22,7 @@ const Login: React.FC = () => {
 
         if (username === import.meta.env.VITE_USERNAME && password === import.meta.env.VITE_PASSWORD) {
             auth.login();
-            navigate('/dashboard');
+            navigate('/h-and-m');
         } else {
             setAlert(true)
         }

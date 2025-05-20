@@ -10,7 +10,7 @@ const CAManual: React.FC = () => {
 
     const auth = useAuth();
 
-    const { deleteProduct,
+    const {
         sortedFilteredProducts,
         regionFilter,
         setRegionFilter,
@@ -91,7 +91,7 @@ const CAManual: React.FC = () => {
                 </Typography>
                 {isLoading ? <Typography variant="h5" color={'black'} >Завантаження...</Typography> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {sortedFilteredProducts.map(product => (
-                        <ProductCard type="c&a" key={product.articleCode} product={product} onDelete={deleteProduct} />
+                        <ProductCard type="c&a" key={product.articleCode} product={product} />
                     ))}
                 </div>}
             </Container>
