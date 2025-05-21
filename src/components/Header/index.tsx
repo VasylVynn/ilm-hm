@@ -80,6 +80,13 @@ export const Header = () => {
           >
             Carters
           </Button>
+          <Button
+            variant='contained'
+            size='large'
+            onClick={() => navigate('/smyk')}
+          >
+            Smyk
+          </Button>
         </Box>
         <Button variant='contained' onClick={handleLogout}>
           Вийти

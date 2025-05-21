@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard'
 import { AuthProvider } from './AuthContext'
 import CAAuto from './pages/CAAuto'
 import Carters from './pages/Carters'
+import Smyk from './pages/Smyk'
 
 export const hMRoutes = [
   {
@@ -29,6 +30,14 @@ export const cartersRoutes = [
   }
 ]
 
+export const smykRoutes = [
+  {
+    path: '/smyk',
+    element: <Smyk />,
+    name: 'Smyk'
+  }
+]
+
 export const routes = [
   {
     path: '/',
@@ -37,7 +46,8 @@ export const routes = [
   },
   ...hMRoutes,
   ...cARoutes,
-  ...cartersRoutes
+  ...cartersRoutes,
+  ...smykRoutes
 ]
 
 const App: React.FC = () => {

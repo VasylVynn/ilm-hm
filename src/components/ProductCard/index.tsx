@@ -97,7 +97,7 @@ export const ProductCard = ({ product, type = 'h&m' }: ProductCardProps) => {
         <Chip
           className='sale-chip'
           label={
-            type === 'carters'
+            type === 'carters' || type === 'smyk'
               ? '-' + product.salePercent + '%'
               : product.salePercent
           }
@@ -142,7 +142,7 @@ export const ProductCard = ({ product, type = 'h&m' }: ProductCardProps) => {
                   {type === 'carters'
                     ? '$' + product.priceSale
                     : product.priceSale}
-                  {type === 'cA' && ' PLN'}
+                  {type === 'cA' || (type === 'smyk' && ' PLN')}
                 </b>
               </>
             )}
@@ -152,7 +152,7 @@ export const ProductCard = ({ product, type = 'h&m' }: ProductCardProps) => {
               {type === 'carters'
                 ? '$' + product.priceRegular
                 : product.priceRegular}
-              {type === 'cA' && ' PLN'}
+              {type === 'cA' || (type === 'smyk' && ' PLN')}
             </b>
           </Typography>
           <Divider style={{ margin: '5px 0' }} />
