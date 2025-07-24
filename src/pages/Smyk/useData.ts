@@ -15,13 +15,19 @@ export interface Product {
   category: string
   reason: string | null
   isClearance?: boolean
+  ribbons?: Array<{
+    label: string
+    image_url: string
+  }>
 }
 
 export const useData = () => {
   const cartersUrl = import.meta.env.VITE_CARTERS_URL
   const [sortField, setSortField] = useState('salePercent')
   const [sortOrder, setSortOrder] = useState(-1)
-  // const [availableSizesFilter, setAvailableSizesFilter] = useState(0)
+  const [ribbonFilter, setRibbonFilter] = useState<string>('')
+  const [availableSizesFilter, setAvailableSizesFilter] = useState(0)
+  const [availableRibbons, setAvailableRibbons] = useState<string[]>([])
   const [products, setProducts] = useState<Product[]>([])
   const [totalProducts, setTotalProducts] = useState(0)
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] =
@@ -32,25 +38,34 @@ export const useData = () => {
 
   useEffect(() => {
     fetchProducts()
-  }, [currentPage, sortField, sortOrder])
+  }, [currentPage, sortField, sortOrder, ribbonFilter, availableSizesFilter])
 
   const fetchProducts = () => {
     setIsLoading(true)
     const offset = (currentPage - 1) * itemsPerPage
 
+    const params: any = {
+      limit: itemsPerPage,
+      offset,
+      sort: sortField,
+      order: sortOrder
+    }
+
+    if (ribbonFilter) {
+      params.ribbon = ribbonFilter
+    }
+
+    if (availableSizesFilter > 0) {
+      params.minSizes = availableSizesFilter
+    }
+
     axios
-      .get(`${cartersUrl}/smyk/products`, {
-        params: {
-          limit: itemsPerPage,
-          offset,
-          sort: sortField,
-          order: sortOrder
-        }
-      })
+      .get(`${cartersUrl}/smyk/products`, { params })
       .then((response) => {
-        const { products, total } = response.data
+        const { products, total, ribbons } = response.data
         setProducts(products || [])
         setTotalProducts(total || 0)
+        setAvailableRibbons(ribbons || [])
       })
       .catch((error) => {
         console.error('There was an error fetching the product data:', error)
@@ -61,6 +76,7 @@ export const useData = () => {
         setIsLoading(false)
       })
   }
+
 
   const deleteProducts = () => {
     axios
@@ -106,8 +122,11 @@ export const useData = () => {
     sortField,
     sortOrder,
     handleSortChange,
-    // availableSizesFilter,
-    // setAvailableSizesFilter,
+    ribbonFilter,
+    setRibbonFilter,
+    availableSizesFilter,
+    setAvailableSizesFilter,
+    availableRibbons,
     isLoading,
     currentPage,
     totalPages,

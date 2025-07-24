@@ -15,6 +15,10 @@ export interface Product {
   region: string
   category: string
   reason: string | null
+  ribbons?: {
+    label: string
+    image_url: string
+  }[]
 }
 
 export const useData = () => {

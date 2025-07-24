@@ -4,7 +4,8 @@ import {
   TextField,
   Typography,
   Pagination,
-  Button
+  Button,
+  MenuItem
 } from '@mui/material'
 import { Navigate } from 'react-router-dom'
 import Alert from '../../components/Alert'
@@ -23,11 +24,11 @@ const Smyk: React.FC = () => {
     isConfirmDeleteModalOpen,
     setIsConfirmDeleteModalOpen,
     handleDelete,
-    // sortField,
-    // sortOrder,
-    // handleSortChange,
-    // availableSizesFilter,
-    // setAvailableSizesFilter,
+    ribbonFilter,
+    setRibbonFilter,
+    availableSizesFilter,
+    setAvailableSizesFilter,
+    availableRibbons,
     isLoading,
     currentPage,
     totalPages,
@@ -131,35 +132,44 @@ const Smyk: React.FC = () => {
     <>
       <Header />
       <Container>
-        <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '15px' }}>
-          {/* <TextField
-            select
-            label='Фільтр по кількості'
-            value={availableSizesFilter}
-            onChange={(e) => setAvailableSizesFilter(parseInt(e.target.value))}
-            style={{ margin: '10px', minWidth: '140px' }}
-          >
-            <MenuItem value={0}>Будь-яка кількість</MenuItem>
-            <MenuItem value={2}>{'>= 2'}</MenuItem>
-            <MenuItem value={3}>{'>= 3'}</MenuItem>
-            <MenuItem value={4}>{'>= 4'}</MenuItem>
-            <MenuItem value={5}>{'>= 5'}</MenuItem>
-          </TextField>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            marginTop: '15px',
+            flexWrap: 'wrap'
+          }}
+        >
+          {availableRibbons.length > 0 && (
+            <TextField
+              select
+              label='Фільтр по стрічці'
+              value={ribbonFilter}
+              onChange={(e) => setRibbonFilter(e.target.value)}
+              style={{ margin: '10px', minWidth: '200px' }}
+            >
+              <MenuItem value=''>Всі товари</MenuItem>
+              {availableRibbons.map((ribbon) => (
+                <MenuItem key={ribbon} value={ribbon}>
+                  {ribbon}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
 
           <TextField
             select
-            label='Сортувати за'
-            value={sortField}
-            onChange={(e) => handleSortChange(e.target.value)}
-            style={{ margin: '10px', minWidth: '140px' }}
+            label='Фільтр по кількості розмірів'
+            value={availableSizesFilter}
+            onChange={(e) => setAvailableSizesFilter(parseInt(e.target.value))}
+            style={{ margin: '10px', minWidth: '200px' }}
           >
-            {sortOptions.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}{' '}
-                {sortField === option.value && (sortOrder === 1 ? '↑' : '↓')}
-              </MenuItem>
-            ))}
-          </TextField> */}
+            <MenuItem value={0}>Будь-яка кількість</MenuItem>
+            <MenuItem value={2}>2 і більше розмірів</MenuItem>
+            <MenuItem value={3}>3 і більше розмірів</MenuItem>
+            <MenuItem value={4}>4 і більше розмірів</MenuItem>
+            <MenuItem value={5}>5 і більше розмірів</MenuItem>
+          </TextField>
 
           <Button
             variant='contained'

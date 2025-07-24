@@ -105,6 +105,21 @@ export const ProductCard = ({ product, type = 'h&m' }: ProductCardProps) => {
           variant='outlined'
         />
       )}
+      {product.ribbons && product.ribbons.length > 0 && (
+        <img
+          src={product.ribbons[0].image_url}
+          alt={product.ribbons[0].label}
+          style={{
+            height: '24px',
+            width: 'auto',
+            borderRadius: '2px',
+            position: 'absolute',
+            top: 5,
+            right: 5,
+            zIndex: 5
+          }}
+        />
+      )}
       <a href={product.link} target='_blank'>
         <Box sx={{ position: 'relative' }}>
           <CardMedia
